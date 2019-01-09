@@ -31,7 +31,7 @@ const getSuccessfulDeployment = async () => {
 const deployed = async () => Boolean(await getSuccessfulDeployment())
 
 ;(async () => {
-  await pWaitFor(deployed, { interval: 5000 })
+  await pWaitFor(deployed, { interval: 15000 })
 
   const { target_url: targetUrl } = await getSuccessfulDeployment()
   // eslint-disable-next-line no-console
