@@ -45,6 +45,10 @@ An example `.travis.yml` can be found here soon!
 - Install dependencies using `yarn install` or `npm install`
 - Start development server using `npm run dev`
 
+## Inspiration
+
+Inspired by [wait-for-now](https://github.com/wyze/wait-for-now)
+
 ## License
 
 [MIT License](./LICENSE)
