@@ -8,13 +8,11 @@ const SimpleReporter = class {
   }
 
   log(logObj) {
-    this.stream.write(`${logObj}\n`)
+    this.stream.write(`${logObj.args[0]}\n`)
   }
 }
 
-consola.setReporters([
-  new SimpleReporter()
-])
+consola.setReporters(new SimpleReporter())
 const octokit = new Octokit()
 
 const [owner, repo] = process.env.TRAVIS_REPO_SLUG.split('/')
