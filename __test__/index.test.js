@@ -18,7 +18,7 @@ nock('https://api.github.com')
   .reply(200, combinedStatusResponse)
 
 test('it calls console.log with deployed url', async () => {
-  require('..')
+  require('../main')
   await pWaitFor(() => consola.log.mock.calls.length > 0)
 
   const consolaMessages = consola.log.mock.calls.map(c => c[0])

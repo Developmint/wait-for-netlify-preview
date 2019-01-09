@@ -3,7 +3,7 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: './coverage/',
   collectCoverageFrom: [
-    'index.js'
+    'main.js'
   ],
   moduleFileExtensions: ['js', 'mjs', 'json'],
   expand: true,
