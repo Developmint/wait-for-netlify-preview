@@ -1,6 +1,6 @@
 # wait-for-netlify-preview
 
-> Let you Travis CI wait for the Netlify build preview
+> Let your Travis CI wait for the Netlify build preview
 
 [![npm (scoped with tag)](https://img.shields.io/npm/v/wait-for-netlify-preview/latest.svg?style=flat-square)](https://npmjs.com/package/wait-for-netlify-preview)
 [![npm](https://img.shields.io/npm/dt/wait-for-netlify-preview.svg?style=flat-square)](https://npmjs.com/package/wait-for-netlify-preview)
