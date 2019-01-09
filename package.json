@@ -33,7 +33,7 @@
   ],
   "bin": "index.js",
   "dependencies": {
-    "@octokit/rest": "^16.6.1",
+    "@octokit/rest": "^16.7.0",
     "consola": "^2.3.2",
     "esm": "^3.0.84",
     "p-wait-for": "^2.0.1"
