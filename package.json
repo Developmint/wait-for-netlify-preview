@@ -12,6 +12,13 @@
     "commitlint": "commitlint -E HUSKY_GIT_PARAMS",
     "coverage": "codecov"
   },
+  "keywords": [
+    "netlify",
+    "travisci",
+    "ci",
+    "wait",
+    "preview"
+  ],
   "bugs": {
     "url": "https://github.com/Developmint/wait-for-netlify-preview/issues"
   },
