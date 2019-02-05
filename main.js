@@ -13,14 +13,14 @@ const SimpleReporter = class {
 }
 
 consola.setReporters(new SimpleReporter())
-const octokit = new Octokit()
+const octokit = new Octokit({
+  auth: `token ${process.env.GITHUB_API_TOKEN}`
+})
 
 const [owner, repo] = process.env.TRAVIS_REPO_SLUG.split('/')
 const ref = process.env.TRAVIS_PULL_REQUEST_SHA
 
 const getSuccessfulDeployment = async () => {
-  octokit.authenticate({ token: process.env.GITHUB_API_TOKEN, type: 'oauth' })
-
   const { data: { statuses } } = await octokit.repos.getCombinedStatusForRef({ owner, ref, repo })
 
   return statuses.find(({ context, state }) => /^netlify\/.*\/deploy-preview$/.test(context) && state === 'success')
@@ -32,7 +32,6 @@ const deployed = async () => Boolean(await getSuccessfulDeployment())
   await pWaitFor(deployed, { interval: 15000 })
 
   const { target_url: targetUrl } = await getSuccessfulDeployment()
-  // eslint-disable-next-line no-console
   consola.log(targetUrl)
   return targetUrl
 })()
