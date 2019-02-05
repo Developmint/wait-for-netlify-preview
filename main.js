@@ -20,10 +20,20 @@ const octokit = new Octokit({
 const [owner, repo] = process.env.TRAVIS_REPO_SLUG.split('/')
 const ref = process.env.TRAVIS_PULL_REQUEST_SHA
 
+const hasDeployPreview = context => /^netlify\/.*\/deploy-preview$/.test(context)
+const successPreview = state => state === 'success'
+const failedPreview = state => state === 'failure'
+
 const getSuccessfulDeployment = async () => {
   const { data: { statuses } } = await octokit.repos.getCombinedStatusForRef({ owner, ref, repo })
 
-  return statuses.find(({ context, state }) => /^netlify\/.*\/deploy-preview$/.test(context) && state === 'success')
+  if (statuses.find(({ context, state }) => hasDeployPreview(context) && failedPreview(state))) {
+    consola.error('Deploy preview failed')
+    // Fail CI
+    process.exit(1)
+  }
+
+  return statuses.find(({ context, state }) => hasDeployPreview(context) && successPreview(state))
 }
 
 const deployed = async () => Boolean(await getSuccessfulDeployment())
