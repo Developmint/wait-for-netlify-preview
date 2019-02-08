@@ -35,7 +35,7 @@
   "dependencies": {
     "@octokit/rest": "^16.15.0",
     "consola": "^2.4.0",
-    "esm": "^3.2.3",
+    "esm": "^3.2.4",
     "p-wait-for": "^2.0.1"
   },
   "devDependencies": {
