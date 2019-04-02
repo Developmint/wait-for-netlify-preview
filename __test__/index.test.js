@@ -1,47 +1,94 @@
-import nock from 'nock'
+jest.mock('@octokit/rest', () => {
+  class Octokit {
+    constructor() {
+      this.repos = {
+        getCombinedStatusForRef: Octokit.getCombinedStatusForRef
+      }
+    }
+  }
+
+  Octokit.getCombinedStatusForRef = jest.fn()
+
+  return Octokit
+})
+import Octokit from '@octokit/rest'
 import pWaitFor from 'p-wait-for'
 import consola from 'consola'
 import combinedStatusResponse from './combined-status-response'
 import combinedStatusFailedResponse from './combined-status-failed-response'
 
-nock.disableNetConnect()
-
 beforeEach(() => {
+  Octokit.getCombinedStatusForRef.mockReset()
   consola.mockTypes(() => jest.fn())
-  nock.cleanAll()
+
+  process.env.TRAVIS_REPO_SLUG = 'manniL/lichter.io'
+  process.env.TRAVIS_PULL_REQUEST_SHA = '50ad1b7dccafa9b08ee3fe70b18df5cce3b6c4b0'
+  process.env.GITHUB_API_TOKEN = '111'
 })
 
-process.env.TRAVIS_REPO_SLUG = 'manniL/lichter.io'
-process.env.TRAVIS_PULL_REQUEST_SHA = '50ad1b7dccafa9b08ee3fe70b18df5cce3b6c4b0'
-process.env.GITHUB_API_TOKEN = '111'
+const requireMain = () => {
+  jest.isolateModules(() => {
+    require('../main')
+  })
+}
 
 test('it throws when deploy preview failed', async () => {
-  nock('https://api.github.com')
-    .persist()
-    .get(`/repos/${process.env.TRAVIS_REPO_SLUG}/commits/${process.env.TRAVIS_PULL_REQUEST_SHA}/status`)
-    .reply(200, combinedStatusFailedResponse)
-
   const exit = jest.spyOn(process, 'exit').mockImplementation(() => {})
+
+  Octokit.getCombinedStatusForRef.mockResolvedValue({
+    data: combinedStatusFailedResponse
+  })
+
   try {
-    require('../main')
-    await pWaitFor(() => false, { timeout: 15000 })
+    requireMain()
+    await pWaitFor(() => consola.errors.mock.calls.length > 0)
   } catch (e) {}
 
   expect(exit).toHaveBeenCalledWith(1)
 
   // Disable mocks
   exit.mockRestore()
-}, 30000)
+})
 
 test('it calls console.log with deployed url', async () => {
-  nock('https://api.github.com')
-    .persist()
-    .get(`/repos/${process.env.TRAVIS_REPO_SLUG}/commits/${process.env.TRAVIS_PULL_REQUEST_SHA}/status`)
-    .reply(200, combinedStatusResponse)
+  Octokit.getCombinedStatusForRef.mockResolvedValue({
+    data: combinedStatusResponse
+  })
 
-  require('../main')
+  requireMain()
   await pWaitFor(() => consola.log.mock.calls.length > 0)
 
-  const consolaMessages = consola.log.mock.calls.map(c => c[0])
-  expect(consolaMessages).toContain(combinedStatusResponse.statuses[0].target_url)
-}, 30000)
+  expect(consola.log).toHaveBeenCalledWith(expect.stringContaining(
+    combinedStatusResponse.statuses[0].target_url
+  ))
+})
+
+test('it works with deploy/netlify status', async () => {
+  const target_url = `https://deploy-preview-26--something-different.netlify.com`
+  const combinedStatusResponseWithChangedContext = {
+    ...combinedStatusResponse,
+    repository: {
+      ...combinedStatusResponse.repository,
+      full_name: `dschau/some-repo`
+    },
+    statuses: [
+      {
+        ...combinedStatusResponse.statuses[0],
+        context: 'deploy/netlify',
+        target_url
+      }
+    ]
+  }
+  process.env.TRAVIS_REPO_SLUG = combinedStatusResponseWithChangedContext.repository.full_name
+
+  Octokit.getCombinedStatusForRef.mockResolvedValue({
+    data: combinedStatusResponseWithChangedContext
+  })
+
+  requireMain()
+  await pWaitFor(() => consola.log.mock.calls.length > 0)
+
+  expect(consola.log).toHaveBeenCalledWith(
+    expect.stringContaining(target_url)
+  )
+})
