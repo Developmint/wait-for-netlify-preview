@@ -1,3 +1,4 @@
+/* eslint import/first: "off" */
 jest.mock('@octokit/rest', () => {
   class Octokit {
     constructor() {
@@ -64,6 +65,7 @@ test('it calls console.log with deployed url', async () => {
 })
 
 test('it works with deploy/netlify status', async () => {
+  /* eslint-disable camelcase */
   const target_url = `https://deploy-preview-26--something-different.netlify.com`
   const combinedStatusResponseWithChangedContext = {
     ...combinedStatusResponse,
