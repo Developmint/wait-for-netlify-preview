@@ -65,8 +65,7 @@ test('it calls console.log with deployed url', async () => {
 })
 
 test('it works with deploy/netlify status', async () => {
-  /* eslint-disable camelcase */
-  const target_url = `https://deploy-preview-26--something-different.netlify.com`
+  const targetUrl = `https://deploy-preview-26--something-different.netlify.com`
   const combinedStatusResponseWithChangedContext = {
     ...combinedStatusResponse,
     repository: {
@@ -77,7 +76,7 @@ test('it works with deploy/netlify status', async () => {
       {
         ...combinedStatusResponse.statuses[0],
         context: 'deploy/netlify',
-        target_url
+        target_url: targetUrl
       }
     ]
   }
@@ -91,6 +90,6 @@ test('it works with deploy/netlify status', async () => {
   await pWaitFor(() => consola.log.mock.calls.length > 0)
 
   expect(consola.log).toHaveBeenCalledWith(
-    expect.stringContaining(target_url)
+    expect.stringContaining(targetUrl)
   )
 })
