@@ -7,7 +7,8 @@
   "repository": "Developmint/wait-for-netlify-preview",
   "scripts": {
     "lint": "eslint index.js __test__",
-    "test": "yarn run lint && jest --detectOpenHandles",
+    "pretest": "yarn run lint",
+    "test": "jest --detectOpenHandles",
     "release": "standard-version && git push --follow-tags && npm publish",
     "commitlint": "commitlint -E HUSKY_GIT_PARAMS",
     "coverage": "codecov"
