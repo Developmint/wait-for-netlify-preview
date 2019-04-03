@@ -7,7 +7,8 @@
   "repository": "Developmint/wait-for-netlify-preview",
   "scripts": {
     "lint": "eslint index.js __test__",
-    "test": "yarn run lint && jest --detectOpenHandles",
+    "pretest": "yarn run lint",
+    "test": "jest --detectOpenHandles",
     "release": "standard-version && git push --follow-tags && npm publish",
     "commitlint": "commitlint -E HUSKY_GIT_PARAMS",
     "coverage": "codecov"
@@ -55,7 +56,6 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^5.1.0",
     "jest": "^24.1.0",
-    "nock": "^10.0.6",
     "standard-version": "^4.4.0"
   },
   "husky": {
