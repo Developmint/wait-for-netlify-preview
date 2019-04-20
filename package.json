@@ -1,6 +1,6 @@
 {
   "name": "wait-for-netlify-preview",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Let you Travis CI wait for the Netlify build preview",
   "main": "indx.js",
   "license": "MIT",

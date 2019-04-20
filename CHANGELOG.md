@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.1](https://github.com/Developmint/wait-for-netlify-preview/compare/v1.2.0...v1.2.1) (2019-04-20)
+
+
+### Bug Fixes
+
+* work with all netlify build contexts ([#15](https://github.com/Developmint/wait-for-netlify-preview/issues/15)) ([7b54326](https://github.com/Developmint/wait-for-netlify-preview/commit/7b54326))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/Developmint/wait-for-netlify-preview/compare/v1.1.0...v1.2.0) (2019-02-06)
 
