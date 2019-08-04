@@ -29,9 +29,9 @@ $ npm install --save wait-for-netlify-preview
 ## Usage
 
 Requires the following environment variables:
- - `GITHUB_API_TOKEN`
- - `TRAVIS_PULL_REQUEST_SHA`
- - `TRAVIS_REPO_SLUG`
+ - `GITHUB_API_TOKEN` with `repo_deployment` scope
+ - `TRAVIS_PULL_REQUEST_SHA`  (automatically provided by travis)
+ - `TRAVIS_REPO_SLUG` (automatically provided by travis)
 
 ```
 $ wait-for-netlify-preview
