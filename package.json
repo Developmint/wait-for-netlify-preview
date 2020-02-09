@@ -42,7 +42,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
-    "@nuxtjs/eslint-config": "^0.0.1",
+    "@nuxtjs/eslint-config": "^2.0.2",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
     "bili": "^4.7.4",
